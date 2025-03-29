@@ -1,0 +1,16 @@
+<section *ngIf="gifts.length > 0; else noGifts">
+  <h2>Received Gifts</h2>
+  <ul>
+    <li *ngFor="let gift of gifts">
+      <strong>{{ gift.giverName }}</strong> gave you
+      <em>{{ gift.giftDescription }}</em> on
+      {{ gift.dateReceived | date : "mediumDate" }}.
+      <span *ngIf="gift.thankYouSent">✅ Thank-you sent</span>
+      <span *ngIf="!gift.thankYouSent">❌ Still needs a thank-you!</span>
+    </li>
+  </ul>
+</section>
+
+<ng-template #noGifts>
+  <p>No gifts logged yet.</p>
+</ng-template>
