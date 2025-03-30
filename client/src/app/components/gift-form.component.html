@@ -1,0 +1,40 @@
+<h2>Add a Thank-You Entry</h2>
+
+<form (ngSubmit)="onSubmit()">
+  <label>
+    Giver Name:
+    <input [(ngModel)]="entry.giverName" name="giverName" required />
+  </label>
+
+  <label>
+    Preferred Name (optional):
+    <input [(ngModel)]="entry.preferredName" name="preferredName" />
+  </label>
+
+  <label>
+    Gift Description:
+    <select [(ngModel)]="entry.giftDescription" name="giftDescription">
+      <option *ngFor="let option of defaultGiftOptions" [value]="option">
+        {{ option }}
+      </option>
+    </select>
+    <input
+      *ngIf="entry.giftDescription === 'Other'"
+      [(ngModel)]="entry.giftDescription"
+      name="giftDescriptionOther"
+      placeholder="Enter custom gift"
+    />
+  </label>
+
+  <label>
+    Gift Note (if they left one):
+    <textarea [(ngModel)]="entry.giftNote" name="giftNote"></textarea>
+  </label>
+
+  <label>
+    Date Received:
+    <input type="date" [(ngModel)]="entry.dateReceived" name="dateReceived" />
+  </label>
+
+  <button type="submit">Save Gift</button>
+</form>

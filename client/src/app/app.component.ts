@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { GiftListComponent } from './components/gift-list.component';
+import { GiftFormComponent } from './components/gift-form.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, GiftListComponent],
+  imports: [GiftFormComponent, GiftListComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

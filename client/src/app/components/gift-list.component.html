@@ -1,12 +1,56 @@
+<div class="filters">
+  <label>
+    Show gifts where:
+    <select [(ngModel)]="progressFilter">
+      <option value="all">All</option>
+      <option value="written">Thank-you not written</option>
+      <option value="addressed">Not addressed</option>
+      <option value="stuffed">Not stuffed</option>
+      <option value="stamped">Not stamped</option>
+      <option value="sent">Not sent</option>
+      <option value="complete">All steps complete</option>
+    </select>
+  </label>
+
+  <label>
+    Sort by:
+    <select [(ngModel)]="sortOption">
+      <option value="dateDesc">Date received (newest first)</option>
+      <option value="dateAsc">Date received (oldest first)</option>
+      <option value="nameAsc">Giver name (A–Z)</option>
+      <option value="nameDesc">Giver name (Z–A)</option>
+    </select>
+  </label>
+</div>
+
+<h2>Received Gifts</h2>
+
 <section *ngIf="gifts.length > 0; else noGifts">
-  <h2>Received Gifts</h2>
   <ul>
-    <li *ngFor="let gift of gifts">
-      <strong>{{ gift.giverName }}</strong> gave you
-      <em>{{ gift.giftDescription }}</em> on
-      {{ gift.dateReceived | date : "mediumDate" }}.
-      <span *ngIf="gift.thankYouSent">✅ Thank-you sent</span>
-      <span *ngIf="!gift.thankYouSent">❌ Still needs a thank-you!</span>
+    <li *ngFor="let gift of filteredGifts">
+      <div>
+        <strong>{{ gift.preferredName || gift.giverName }}</strong> gave you
+        <em>{{ gift.giftDescription }}</em>
+        on {{ gift.dateReceived | date : "mediumDate" }}.
+      </div>
+
+      <div *ngIf="gift.giftNote">
+        <small><em>Note they left:</em> "{{ gift.giftNote }}"</small>
+      </div>
+
+      <div>
+        <h4>Thank-You Progress</h4>
+        <label *ngFor="let step of progressKeys">
+          <input
+            type="checkbox"
+            [checked]="gift.progress[step]"
+            (change)="toggleProgress(gift, step)"
+          />
+          {{ step }}
+        </label>
+      </div>
+
+      <hr />
     </li>
   </ul>
 </section>

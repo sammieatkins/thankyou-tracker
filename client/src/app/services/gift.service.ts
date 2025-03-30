@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Gift } from '../models/gift.model';
+import { ThankYouEntry } from '../models/thankYouEntry.model';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -9,16 +9,16 @@ export class GiftService {
 
   constructor(private http: HttpClient) {}
 
-  getGifts(): Observable<Gift[]> {
-    return this.http.get<Gift[]>(this.apiUrl);
+  getGifts(): Observable<ThankYouEntry[]> {
+    return this.http.get<ThankYouEntry[]>(this.apiUrl);
   }
 
-  addGift(gift: Gift): Observable<Gift> {
-    return this.http.post<Gift>(this.apiUrl, gift);
+  addGift(gift: ThankYouEntry): Observable<ThankYouEntry> {
+    return this.http.post<ThankYouEntry>(this.apiUrl, gift);
   }
 
-  updateGift(id: string, gift: Partial<Gift>): Observable<Gift> {
-    return this.http.put<Gift>(`${this.apiUrl}/${id}`, gift);
+  updateGift(id: string, gift: Partial<ThankYouEntry>): Observable<ThankYouEntry> {
+    return this.http.put<ThankYouEntry>(`${this.apiUrl}/${id}`, gift);
   }
 
   deleteGift(id: string): Observable<any> {
