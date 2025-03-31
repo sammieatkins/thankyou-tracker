@@ -71,14 +71,14 @@ export class GiftListComponent implements OnInit {
     };
 
     this.giftService.updateGift(gift._id!, updatedGift).subscribe((res) => {
-      gift.progress[step] = !gift.progress[step]; // update locally on success
+      gift.progress[step] = !gift.progress[step];
     });
   }
 
   get filteredGifts(): ThankYouEntry[] {
     let filtered = this.gifts;
 
-    // Apply progress filter (excluding archived from the main list)
+    // apply progress filter (excluding archived from the main list)
     if (this.progressFilter !== 'all') {
       filtered = filtered.filter((gift) => {
         if (this.progressFilter === 'complete') {
@@ -90,7 +90,7 @@ export class GiftListComponent implements OnInit {
       });
     }
 
-    // 🧼 Filter out archived gifts so they don't show twice
+    // filter out archived gifts so they don't show twice
     return filtered
       .filter((gift) => !this.isArchived(gift))
       .sort((a, b) => {
@@ -136,7 +136,7 @@ export class GiftListComponent implements OnInit {
     this.editGift = null;
     this.showForm = false;
 
-    // Refresh the gift list to reflect new/updated data
+    // refresh the gift list
     this.giftService.getGifts().subscribe((data) => {
       this.gifts = data;
     });

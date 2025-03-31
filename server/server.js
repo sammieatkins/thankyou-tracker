@@ -11,11 +11,6 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// // TEST ROUTE
-// app.get("/", (req, res) => {
-//   res.send("🎉 Server is up and running!");
-// });
-
 // API ROUTES
 const giftRoutes = require("./routes/gifts");
 app.use("/api/gifts", giftRoutes);
