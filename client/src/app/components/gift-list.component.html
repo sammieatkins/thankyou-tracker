@@ -1,7 +1,25 @@
+<!-- Trigger Button -->
+<button (click)="showForm = true" class="open-form-button">
+  Add a Thank-You Entry
+</button>
+
+<!-- Modal -->
+<div class="modal-backdrop" *ngIf="showForm">
+  <div class="modal-content">
+    <button class="close-button" (click)="showForm = false">✕</button>
+    <app-gift-form
+      [existingGift]="editGift"
+      (formSubmitted)="handleFormClose()"
+    ></app-gift-form>
+  </div>
+</div>
+
+<h2>Received Gifts</h2>
+
 <div class="filters">
   <label>
     Show gifts where:
-    <select [(ngModel)]="progressFilter">
+    <select [(ngModel)]="progressFilter" (ngModelChange)="saveFilters()">
       <option value="all">All</option>
       <option value="written">Thank-you not written</option>
       <option value="addressed">Not addressed</option>
@@ -23,36 +41,100 @@
   </label>
 </div>
 
-<h2>Received Gifts</h2>
+<section *ngIf="gifts.length > 0; else noGifts" class="gift-grid">
+  <div
+    *ngFor="let gift of filteredGifts"
+    [ngClass]="{ 'gift-card': true, archived: isArchived(gift) }"
+  >
+    <div class="card-menu-wrapper">
+      <button class="menu-button" (click)="toggleMenu(gift)">
+        <span class="material-symbols--more-vert"></span>
+      </button>
 
-<section *ngIf="gifts.length > 0; else noGifts">
-  <ul>
-    <li *ngFor="let gift of filteredGifts">
-      <div>
-        <strong>{{ gift.preferredName || gift.giverName }}</strong> gave you
-        <em>{{ gift.giftDescription }}</em>
-        on {{ gift.dateReceived | date : "mediumDate" }}.
+      <div class="menu-dropdown" *ngIf="openMenuGift === gift">
+        <button (click)="startEdit(gift)">Edit</button>
+        <button (click)="deleteGift(gift)">Delete</button>
       </div>
+    </div>
 
-      <div *ngIf="gift.giftNote">
-        <small><em>Note they left:</em> "{{ gift.giftNote }}"</small>
+    <div class="gift-date">{{ gift.dateReceived | date : "mediumDate" }}</div>
+
+    <div class="gift-title">
+      <strong>{{ gift.giverName | titlecase }}</strong>
+      <div *ngIf="gift.preferredName" class="preferred-name">
+        (Preferred name: {{ gift.preferredName }})
       </div>
+    </div>
 
-      <div>
-        <h4>Thank-You Progress</h4>
-        <label *ngFor="let step of progressKeys">
-          <input
-            type="checkbox"
-            [checked]="gift.progress[step]"
-            (change)="toggleProgress(gift, step)"
-          />
-          {{ step }}
-        </label>
+    <div class="gift-description">{{ gift.giftDescription }}</div>
+
+    <div *ngIf="gift.giftNote" class="gift-note">"{{ gift.giftNote }}"</div>
+
+    <div class="progress-bar">
+      <div
+        *ngFor="let step of progressKeys; let i = index"
+        class="progress-step"
+      >
+        <div
+          class="node"
+          [class.checked]="gift.progress[step]"
+          (click)="toggleProgress(gift, step)"
+          tabindex="0"
+          role="checkbox"
+          [attr.aria-checked]="gift.progress[step]"
+        ></div>
+        <span class="step-label">{{ step }}</span>
+        <div *ngIf="i < progressKeys.length - 1" class="line"></div>
       </div>
+    </div>
+  </div>
+</section>
 
-      <hr />
-    </li>
-  </ul>
+<h2 *ngIf="archivedGifts().length > 0">Archived Gifts</h2>
+<section *ngIf="archivedGifts().length > 0" class="gift-grid archived-grid">
+  <div *ngFor="let gift of archivedGifts()" class="gift-card archived">
+    <div class="card-menu-wrapper">
+      <button class="menu-button" (click)="toggleMenu(gift)">
+        <span class="material-symbols--more-vert"></span>
+      </button>
+
+      <div class="menu-dropdown" *ngIf="openMenuGift === gift">
+        <button (click)="startEdit(gift)">Edit</button>
+        <button (click)="deleteGift(gift)">Delete</button>
+      </div>
+    </div>
+
+    <div class="gift-date">{{ gift.dateReceived | date : "mediumDate" }}</div>
+
+    <div class="gift-title">
+      <strong>{{ gift.giverName | titlecase }}</strong>
+      <div *ngIf="gift.preferredName" class="preferred-name">
+        (Preferred name: {{ gift.preferredName }})
+      </div>
+    </div>
+
+    <div class="gift-description">{{ gift.giftDescription }}</div>
+
+    <div *ngIf="gift.giftNote" class="gift-note">"{{ gift.giftNote }}"</div>
+
+    <div class="progress-bar">
+      <div
+        *ngFor="let step of progressKeys; let i = index"
+        class="progress-step"
+      >
+        <div
+          class="node"
+          [class.checked]="gift.progress[step]"
+          (click)="toggleProgress(gift, step)"
+          tabindex="0"
+          role="checkbox"
+          [attr.aria-checked]="gift.progress[step]"
+        ></div>
+        <span class="step-label">{{ step }}</span>
+        <div *ngIf="i < progressKeys.length - 1" class="line"></div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <ng-template #noGifts>

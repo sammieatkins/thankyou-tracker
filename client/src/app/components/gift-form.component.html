@@ -13,18 +13,20 @@
 
   <label>
     Gift Description:
-    <select [(ngModel)]="entry.giftDescription" name="giftDescription">
-      <option *ngFor="let option of defaultGiftOptions" [value]="option">
-        {{ option }}
-      </option>
-    </select>
     <input
-      *ngIf="entry.giftDescription === 'Other'"
       [(ngModel)]="entry.giftDescription"
-      name="giftDescriptionOther"
-      placeholder="Enter custom gift"
+      name="giftDescription"
+      placeholder="Describe the gift"
     />
   </label>
+
+  <div class="preset-options">
+    <span>Quick Add:</span>
+    <button type="button" (click)="setGiftDescription('Cash')">Cash</button>
+    <button type="button" (click)="setGiftDescription('Gift Card')">
+      Gift Card
+    </button>
+  </div>
 
   <label>
     Gift Note (if they left one):

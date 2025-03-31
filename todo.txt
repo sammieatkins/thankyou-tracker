@@ -1,0 +1,7 @@
+- styling
+-- cards
+-- basic css
+
+- more filtering for if it DOES have something completed
+
+- update and delete functionality

@@ -17,7 +17,10 @@ export class GiftService {
     return this.http.post<ThankYouEntry>(this.apiUrl, gift);
   }
 
-  updateGift(id: string, gift: Partial<ThankYouEntry>): Observable<ThankYouEntry> {
+  updateGift(
+    id: string,
+    gift: Partial<ThankYouEntry>
+  ): Observable<ThankYouEntry> {
     return this.http.put<ThankYouEntry>(`${this.apiUrl}/${id}`, gift);
   }
 
