@@ -1,0 +1,7 @@
+{
+  "name": "thankyou-tracker-root",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "npm run build --prefix client"
+  }
+}
