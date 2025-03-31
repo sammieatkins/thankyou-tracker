@@ -1,7 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-require("dotenv").config();
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, ".env") });
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -10,10 +11,10 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// TEST ROUTE
-app.get("/", (req, res) => {
-  res.send("🎉 Server is up and running!");
-});
+// // TEST ROUTE
+// app.get("/", (req, res) => {
+//   res.send("🎉 Server is up and running!");
+// });
 
 // API ROUTES
 const giftRoutes = require("./routes/gifts");
@@ -28,9 +29,13 @@ mongoose
     const path = require("path");
 
     // SERVE FRONTEND STATIC FILES
-    app.use(express.static(path.join(__dirname, "../client/dist/client/browser")));
+    app.use(
+      express.static(path.join(__dirname, "../client/dist/client/browser"))
+    );
     app.get("*", (req, res) => {
-      res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+      res.sendFile(
+        path.join(__dirname, "../client/dist/client/browser/index.html")
+      );
     });
 
     // START SERVER
