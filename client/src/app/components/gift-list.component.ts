@@ -21,16 +21,35 @@ export class GiftListComponent implements OnInit {
     'stamped',
     'sent',
   ];
-  progressFilter: string = 'all';
-  sortOption: string = 'dateDesc';
+  private _progressFilter: string = 'all';
+  get progressFilter(): string {
+    return this._progressFilter;
+  }
+  set progressFilter(value: string) {
+    this._progressFilter = value;
+    localStorage.setItem('progressFilter', value);
+  }
+
+  private _sortOption: string = 'dateDesc';
+  get sortOption(): string {
+    return this._sortOption;
+  }
+  set sortOption(value: string) {
+    this._sortOption = value;
+    localStorage.setItem('sortOption', value);
+  }
+
   mustBeDone: string = '';
   mustBeNotDone: string = '';
 
   constructor(private giftService: GiftService) {}
 
   ngOnInit() {
-    this.progressFilter = localStorage.getItem('progressFilter') || 'all';
-    this.sortOption = localStorage.getItem('sortOption') || 'dateDesc';
+    const savedProgress = localStorage.getItem('progressFilter');
+    const savedSort = localStorage.getItem('sortOption');
+
+    if (savedProgress) this.progressFilter = savedProgress;
+    if (savedSort) this.sortOption = savedSort;
 
     this.giftService.getGifts().subscribe((data) => {
       this.gifts = data;
@@ -116,7 +135,7 @@ export class GiftListComponent implements OnInit {
   handleFormClose() {
     this.editGift = null;
     this.showForm = false;
-  
+
     // Refresh the gift list to reflect new/updated data
     this.giftService.getGifts().subscribe((data) => {
       this.gifts = data;
