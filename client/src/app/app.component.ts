@@ -1,12 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { GiftListComponent } from './components/gift-list.component';
+import { AuthComponent } from './auth/auth.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [GiftListComponent],
+  standalone: true,
+  imports: [GiftListComponent, AuthComponent, CommonModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
-  title = 'client';
+export class AppComponent implements OnInit {
+  isLoggedIn = false;
+  private auth = inject(Auth);
+
+  ngOnInit() {
+    onAuthStateChanged(this.auth, (user) => {
+      this.isLoggedIn = !!user;
+    });
+  }
 }

@@ -1,3 +1,5 @@
 <h1>Thank You Tracker</h1>
 
-<app-gift-list></app-gift-list>
+<app-auth></app-auth>
+
+<app-gift-list *ngIf="isLoggedIn"></app-gift-list>
